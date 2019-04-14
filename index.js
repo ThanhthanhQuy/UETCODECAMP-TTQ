@@ -41,6 +41,6 @@ var server=  http.createServer(function (req, res)  {
         res.write(message);
         res.end();
 })
-server.listen(port, host, function (err) {
+server.listen(port,host, function (err) {
     if(!err) {console.log('Server is running......')}
 });
