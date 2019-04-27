@@ -1,46 +1,15 @@
-const  http = require('http');
-const url= require('url');
-const host= process.env.HOST;
-const port= process.env.PORT;
+let express= require('express');
+let bodyparser = require('body-parser');
+let port= process.env.PORT || 2000;
+let app= express();
 
-function get () {
-    return 'world';
-}
-function post() {
-    return 'world created'
-}
-function put() {
-    return 'world updated'
-}
-function remove() {
-    return 'world deleted';
-}
-function other() {
-    return 'Invalid method';
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({extended: false}));
 
-}
 
-var config = [ {
-    path: '/hello',
-    data:
-        {
-            'GET': get(),
-            'POST': post(),
-            'PUT': put(),
-            'DELETE': remove()
-        }
-}]
+app.use(require('./routes'));
 
-var server=  http.createServer(function (req, res)  {
-
-    const location = url.parse(req.url);
-    const pathconfig = config.find(function (element) {
-        return (element.path === location.pathname);
-    })
-     const message = pathconfig ?  (pathconfig.data[req.method] || other() ) : 'Invalid';
-        res.write(message);
-        res.end();
+app.listen(port, (err)=>{
+    if(err) {console.log(err);}
+    console.log('Server is running......');
 })
-server.listen(port,host, function (err) {
-    if(!err) {console.log('Server is running......')}
-});
