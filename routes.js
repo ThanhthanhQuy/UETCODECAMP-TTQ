@@ -4,7 +4,7 @@ let router= express.Router();
 
 let func = require('./controller/objcontroller')
 router.get('/', (req, res)=> {
-    res.send('Hello World!')
+    res.send('Hello, world!')
 })
 router.post('/todos', func.create);
 router.get('/todos/:id', func.getbyID);
