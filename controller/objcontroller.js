@@ -1,7 +1,7 @@
 let data = require('../models/objmodels');
 
 
-exports.create= function (req, res) {
+exports.create= async (req, res) => {
     let defaulttitle = {
     title: '',
 }
@@ -14,7 +14,7 @@ exports.create= function (req, res) {
             message: 'Title is emty'
         })
     }
-    let post= new data({title,});
+    let post= new data({title: 'Hello'});
     post.save()
         .then((doc)=> {
         return res.send({
@@ -29,10 +29,12 @@ exports.create= function (req, res) {
         })
     })
 }
-exports.getbyID= (req, res)=> {
+exports.getbyID=async (req, res)=> {
     let {id}= req.params;
-    data.findById(id)
+    await data.findOne({_id: id})
         .then((doc)=>{
+          
+            
             res.send({
                 success: true,
                 data: doc
@@ -47,10 +49,11 @@ exports.getbyID= (req, res)=> {
         })
 }
 
-exports.deleteById = ( req, res) => {
+exports.deleteById =async ( req, res) => {
     let {id}= req.params;
-   data.findOneAndRemove({_id:id})
-        .then((doc)=>{
+    await data.findOne({_id:id})
+        .then(async (doc)=>{
+            await data.deleteOne({_id:id})
             res.send({
                 success: true,
                 data: true
@@ -65,19 +68,19 @@ exports.deleteById = ( req, res) => {
         })
 
 };
-exports.updateById = ( req, res) => {
+exports.updateById =async ( req, res) => {
     let {id}= req.params;
     let {title}= req.body;
-    console.log(title);
     if(!title) {
         return res.send({
             success: false,
             message: 'Title is emty'
         })
     }
-    data.findOneAndUpdate({_id:id}, {title})
-        .then((doc)=>{
-
+    await data.findOne({_id:id})
+        .then(async (doc)=>{
+            await data.updateOne({_id:id},
+                {$set: {title}})
             res.send({
                 success: true,
                 data: true
