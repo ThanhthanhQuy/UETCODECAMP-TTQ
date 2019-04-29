@@ -4,22 +4,24 @@ let data = require('../models/objmodels');
 exports.create= function (req, res) {
     let defaulttitle = {
     title: '',
-    complete: true,
 }
 
     let {title}= Object.assign({}, defaulttitle, req.body) //merge vs req.body.title và default.title
-    let {complete}= defaulttitle;
 
     if(!title) {
         return res.send({
             success:false,
-            error: 'Title is emty'
+            message: 'Title is emty'
         })
     }
-    let post= new data({title,complete,});
+    let post= new data({title,});
     post.save()
         .then((doc)=> {
-        return res.send(doc) })
+        return res.send({
+            data: doc.toJSON(),
+            success: true
+        }) 
+    })
     .catch((err) => {
         return res.send ( {
             success:false,
@@ -39,7 +41,7 @@ exports.getbyID= (req, res)=> {
         .catch((err)=> {
             res.send({
                 success: false,
-                error:err.message
+                message: 'Dont found'
 
             })
         })
@@ -57,7 +59,7 @@ exports.deleteById = ( req, res) => {
         .catch((err)=> {
             res.send({
                 success: false,
-                error:err.message
+                message: 'Dont found'
 
             })
         })
@@ -70,7 +72,7 @@ exports.updateById = ( req, res) => {
     if(!title) {
         return res.send({
             success: false,
-            error: 'Title is emty'
+            message: 'Title is emty'
         })
     }
     data.findOneAndUpdate({_id:id}, {title})
@@ -84,7 +86,7 @@ exports.updateById = ( req, res) => {
         .catch((err)=> {
             res.send({
                 success: false,
-                error:err.message
+                message: err.message
 
             })
         })

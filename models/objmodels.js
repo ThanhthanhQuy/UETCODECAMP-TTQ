@@ -12,7 +12,6 @@ moogoose.connect(`mongodb://${mongo_path}:${mongo_port}/data`, /* từ phiên b
 
 let schema= new Schema({
     title : {type:String, require: true, trim: true},
-    complete: {type: Boolean, require: true, trim:true},
     created : {
         type: Date,
         default: Date.now

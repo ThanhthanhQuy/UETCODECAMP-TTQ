@@ -1,9 +1,5 @@
 let express =require('express');
 
-
-
-
-
 let router= express.Router();
 
 let func = require('./controller/objcontroller')
