@@ -68,7 +68,7 @@ exports.deleteById =async ( req, res) => {
         })
 
 };
-exports.updateById =async ( req, res) => {
+exports.updateById = ( req, res) => {
     let {id}= req.params;
     let {title}= req.body;
     if(!title) {
@@ -77,9 +77,9 @@ exports.updateById =async ( req, res) => {
             message: 'Title is emty'
         })
     }
-    await data.findOne({_id:id})
+     data.findOne({_id:id})
         .then(async (doc)=>{
-            await data.updateOne({_id:id},
+            await data.updateOne({_id:id}, // find xong mới update cần theo cơ chế đồng bộ
                 {$set: {title}})
             res.send({
                 success: true,
